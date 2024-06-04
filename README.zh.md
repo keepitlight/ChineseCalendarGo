@@ -3,7 +3,9 @@
 
 [English](README.md) | 中文
 
-> 根据 [Lofanmi/chinese-calendar-golang](https://github.com/Lofanmi/chinese-calendar-golang) 项目源代码重构
+> **关于** 参考 [Lofanmi/chinese-calendar-golang](https://github.com/Lofanmi/chinese-calendar-golang) 项目源代码。
+> 此库与源库概念和架构差异较大，难以向源库提交 PR，是完全从 0 开发的一个全新的版本，日历数据取自源库，未来考虑也独立出来
+> 单独维护，或者从第三方源库同步更新。
 
 文档参见 [Chinese Calendar](https://pkg.go.dev/github.com/keepitlight/ChineseCalendarGo)
 
@@ -22,16 +24,17 @@
 ## 名词与对应的英文翻译
 
 - 使用英文 `notation` 表示我国传统历法/文化的符号系统
-- 干支 `Notation`，别名 `SexagesimalCycle` 意义为传统历法/文化的一种计时系统，由天干和地支组成
+- 干支 `Notation`，别名 `SexagesimalCycle` 意义为传统历法/文化的一种符号系统，由天干和地支组成
 - 天干 `Major`，别名 `CelestialStem` 表示传统历法/文化符号系统的主要符号，十天干名采用拼音表示
 - 地支 `Minor`，别名 `TerrestrialBranch` 表示传统历法/文化符号系统的次要符号，十二地支名采用拼音表示
 - 生肖 `Sign`，别名 `Symbol`, `ChineseZodiac` 表示传统历法/文化的一种特征/象征/图腾，或某种便于记忆流传的符号
 - 节气 `SolarTerm`，各节气英文名来自 2022 年冬奥会官方翻译，并将香港天文台英文翻译中不同名的作为别名
 
-## 相对于源库的修改
+## 相对于源库的变化
 
-- 重命名
+- 从文化和技术层面厘清概念，重新规划了技术架构，对涉及的关键词汇进行了重命名
 - 重构、规范和简化了程序要素
+- 增加了更多适用的函数和方法，便于计算与转换
 
 ## 不足之处
 
