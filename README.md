@@ -14,6 +14,8 @@ English | [中文](README.zh.md)
 > we consider maintaining it independently or updating it by synchronizing 
 > with a third-party source library.
 
+Documentation in `go.dev`: [Chinese Calendar](https://pkg.go.dev/github.com/keepitlight/ChineseCalendarGo)
+
 ## Features
 
 - Representation of the combined calendar dates of the Gregorian calendar and the traditional Chinese calendar, also known as the lunar calendar
