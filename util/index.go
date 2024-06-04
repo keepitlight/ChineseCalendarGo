@@ -1,7 +1,6 @@
 package util
 
 import (
-	"math"
 	"strconv"
 	"strings"
 )
@@ -14,53 +13,6 @@ func Mod(v, mod int) (result int) {
 	if result <= 0 {
 		result += mod
 	}
-	return
-}
-
-// Convert to convert the given Julian Day to Gregorian year, month, day, hour, minute, second.
-//
-// 用于将儒略日数转公历时间。此方法使用 math.Floor 取整数
-func Convert(jd float64) (year, month, day, hour, minute, second int) {
-	// 取得日数的整数部份 A 及小数部分 F
-	D := math.Floor(jd + 0.5)
-	F := jd + 0.5 - D
-	c := 0.0
-
-	if D >= 2299161 {
-		c = math.Floor((D - 1867216.25) / 36524.25)
-		D += 1 + c - math.Floor(c/4)
-	}
-
-	// 年数
-	D += 1524
-	year = int(math.Floor((D - 122.1) / 365.25))
-	// 月数
-	D -= math.Floor(365.25 * float64(year))
-	month = int(math.Floor(D / 30.601))
-	// 日数
-	D -= math.Floor(30.601 * float64(month))
-	day = int(D)
-
-	if month > 13 {
-		month -= 13
-		year -= 4715
-	} else {
-		month -= 1
-		year -= 4716
-	}
-
-	// 日的小数转为时分秒
-	F *= 24
-	hour = int(math.Floor(F))
-	F -= float64(hour)
-
-	F *= 60
-	minute = int(math.Floor(F))
-	F -= float64(minute)
-
-	F *= 60
-	second = int(F)
-
 	return
 }
 
@@ -106,7 +58,7 @@ var (
 //   Small(12018) // 二千零一十八
 //   Small(2018) // 二千零一十八
 //
-// 返回一万以内的十进制中文数值（不含 10000，超出 10000 取模），例如 12018 返回 “二千零一十八”
+// 返回一万以内小数（较小的数）的十进制中文数值（不含 10000，超出 10000 取模），例如 12018 返回 “二千零一十八”
 func Small(n uint16) string {
 	v, _, _, _ := small(n)
 	return v
