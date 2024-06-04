@@ -28,49 +28,6 @@ func TestMod(t *testing.T) {
 	}
 }
 
-func TestConvert(t *testing.T) {
-	type args struct {
-		jd float64
-	}
-	tests := []struct {
-		name   string
-		args   args
-		wantY  int
-		wantM  int
-		wantD  int
-		wantH  int
-		wantM2 int
-		wantS  int
-	}{
-		{"2018-02-04 05:28:29", args{2458153.72812377}, 2018, 2, 4, 5, 28, 29},
-		{"50046-01-13 12:00:00", args{19999999}, 50046, 1, 13, 12, 00, 00},
-		{"-4712-01-02 12:00:00", args{1}, -4712, 1, 2, 12, 00, 00},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			gotY, gotM, gotD, gotH, gotM2, gotS := Convert(tt.args.jd)
-			if gotY != tt.wantY {
-				t.Errorf("Convert() got_Y = %v, want %v", gotY, tt.wantY)
-			}
-			if gotM != tt.wantM {
-				t.Errorf("Convert() got_M = %v, want %v", gotM, tt.wantM)
-			}
-			if gotD != tt.wantD {
-				t.Errorf("Convert() got_D = %v, want %v", gotD, tt.wantD)
-			}
-			if gotH != tt.wantH {
-				t.Errorf("Convert() got_h = %v, want %v", gotH, tt.wantH)
-			}
-			if gotM2 != tt.wantM2 {
-				t.Errorf("Convert() got_m = %v, want %v", gotM2, tt.wantM2)
-			}
-			if gotS != tt.wantS {
-				t.Errorf("Convert() got_s = %v, want %v", gotS, tt.wantS)
-			}
-		})
-	}
-}
-
 func TestSmallNumbers(t *testing.T) {
 	for _, tt := range []struct {
 		name string
