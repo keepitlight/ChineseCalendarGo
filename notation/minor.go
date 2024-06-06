@@ -27,13 +27,17 @@ const (
 	Hai                   // Hai 12th 亥
 
 	MinorInvalid Minor = 0  // 无效地支值
-	MinorMod           = 12 // 地支的模数
+	MinorCycle         = 12 // 地支的周期
 )
 
 // Minors is the Chinese names of the 12 terrestrial branch
 //
 // 全部的地支名称
-var Minors = [...]string{
+func Minors() [12]string {
+	return minors
+}
+
+var minors = [...]string{
 	"子",
 	"丑",
 	"寅",
@@ -55,7 +59,7 @@ func (m Minor) Name() string {
 	if !m.Valid() {
 		return ""
 	}
-	return Minors[(m-1)%MinorMod]
+	return minors[(m-1)%MinorCycle]
 }
 
 // Sign returns the sign of the minor

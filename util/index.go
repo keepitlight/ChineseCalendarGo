@@ -10,10 +10,28 @@ import (
 // 模运算 (modulo)，返回 v % mod，v <= 0 时返回 v % mod + mod
 func Mod(v, mod int) (result int) {
 	result = v % mod
-	if result <= 0 {
+	if result < 0 {
 		result += mod
 	}
 	return
+}
+
+// Cycle to calculate the cycle of v without zero, where length denotes the period length and
+// must be greater than 1, negative values are interpreted as cycling in the opposite direction,
+//
+// 无 0 的循环周期运算，length 为周期长度，必须大于 1，负数视为反方向的循环。
+func Cycle(v int, length uint) int {
+	if v == 0 {
+		return 0
+	}
+	if v < 0 {
+		v++ // offset 1
+	}
+	v %= int(length)
+	if v <= 0 {
+		v += int(length)
+	}
+	return v
 }
 
 var digits = []string{

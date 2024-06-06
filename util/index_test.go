@@ -1,6 +1,9 @@
 package util
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestMod(t *testing.T) {
 	type args struct {
@@ -23,6 +26,72 @@ func TestMod(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if gotResult := Mod(tt.args.a, tt.args.b); gotResult != tt.wantResult {
 				t.Errorf("Mod() = %v, want %v", gotResult, tt.wantResult)
+			}
+		})
+	}
+}
+
+func TestCycle(t *testing.T) {
+	type args struct {
+		v     int
+		cycle uint
+	}
+	tests := []struct {
+		name       string
+		args       args
+		wantResult int
+	}{
+		{"0", args{0, 12}, 0}, // 无效值
+		{"1", args{1, 12}, 1},
+		{"2", args{2, 12}, 2},
+		{"3", args{3, 12}, 3},
+		{"4", args{4, 12}, 4},
+		{"5", args{5, 12}, 5},
+		{"6", args{6, 12}, 6},
+		{"7", args{7, 12}, 7},
+		{"8", args{8, 12}, 8},
+		{"9", args{9, 12}, 9},
+		{"10", args{10, 12}, 10},
+		{"11", args{11, 12}, 11},
+		{"12", args{12, 12}, 12},
+		{"-24", args{-24, 12}, 1},
+		{"-23", args{-23, 12}, 2},
+		{"-22", args{-22, 12}, 3},
+		{"-21", args{-21, 12}, 4},
+		{"-20", args{-20, 12}, 5},
+		{"-19", args{-19, 12}, 6},
+		{"-18", args{-18, 12}, 7},
+		{"-17", args{-17, 12}, 8},
+		{"-16", args{-16, 12}, 9},
+		{"-15", args{-15, 12}, 10},
+		{"-14", args{-14, 12}, 11},
+		{"-13", args{-13, 12}, 12},
+		{"-12", args{-12, 12}, 1},
+		{"-11", args{-11, 12}, 2},
+		{"-10", args{-10, 12}, 3},
+		{"-9", args{-9, 12}, 4},
+		{"-8", args{-8, 12}, 5},
+		{"-7", args{-7, 12}, 6},
+		{"-6", args{-6, 12}, 7},
+		{"-5", args{-5, 12}, 8},
+		{"-4", args{-4, 12}, 9},
+		{"-3", args{-3, 12}, 10},
+		{"-2", args{-2, 12}, 11},
+		{"-1", args{-1, 12}, 12},
+		{"13", args{13, 12}, 1},
+		{"14", args{14, 12}, 2},
+		{"24", args{24, 12}, 12},
+		{"100", args{96, 12}, 12},
+		{"100", args{97, 12}, 1},
+		{"100", args{98, 12}, 2},
+		{"100", args{99, 12}, 3},
+		{"100", args{100, 12}, 4},
+		{"100", args{101, 12}, 5},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("Cycle(%s)", tt.name), func(t *testing.T) {
+			if got := Cycle(tt.args.v, tt.args.cycle); got != tt.wantResult {
+				t.Errorf("Cycle(%v) = %v, want %v", tt.args.v, got, tt.wantResult)
 			}
 		})
 	}

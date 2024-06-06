@@ -3,7 +3,7 @@ package notation
 import "testing"
 
 func TestMajor(t *testing.T) {
-	for i, major := range Majors {
+	for i, major := range majors {
 		m := Major(i + 1)
 		if m.String() != major {
 			t.Errorf("%d: %s error", i+1, major)
