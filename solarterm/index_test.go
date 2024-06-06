@@ -72,7 +72,7 @@ func TestAnnual(t *testing.T) {
 	for i, index := range Annual(2023) {
 		if index.Unix() != getTimestamp((2023-1904)*24+i) {
 			t.Error("Annual(2023) error")
-		} else if index.SolarTerm().Name() != ChineseNames[i] {
+		} else if index.SolarTerm().Name() != _ChineseNames[i] {
 			t.Error("Annual(2023) error")
 		}
 	}
