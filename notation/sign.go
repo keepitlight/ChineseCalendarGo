@@ -48,12 +48,18 @@ const (
 	JI   = Rooster // 鸡，别名
 	Gou  = Dog     // 狗，别名
 	Zhu  = Pig     // 猪，别名
+
+	SignCycle = 12
 )
 
 // Signs is the names of Chinese zodiac.
 //
 // 生肖名称
-var Signs = [...]string{
+func Signs() [12]string {
+	return signs
+}
+
+var signs = [...]string{
 	"鼠",
 	"牛",
 	"虎",
@@ -72,7 +78,7 @@ var Signs = [...]string{
 //
 // 尝试解析生肖名为生肖，如果解析失败则返回 Invalid
 func TryParse(sign string) (Sign, bool) {
-	for i, s := range Signs {
+	for i, s := range signs {
 		if s == sign {
 			return Sign(i + 1), true
 		}
@@ -87,7 +93,7 @@ func (s Sign) Name() string {
 	if s == SignInvalid {
 		return ""
 	}
-	return Signs[(s-1)%12]
+	return signs[(s-1)%12]
 }
 
 func (s Sign) String() string {
