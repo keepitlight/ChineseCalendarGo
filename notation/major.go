@@ -24,14 +24,11 @@ const (
 	Ren                   // Ren 9th 壬
 	Gui                   // Gui 10th 癸
 
-	MajorInvalid Major = 0 // 无效值
-	MajorMod           = 10
+	MajorInvalid Major = 0  // 无效值
+	MajorCycle         = 10 // 天干周期
 )
 
-// Majors is Chinese name of 10 celestial stem
-//
-// 全部的天干名称
-var Majors = [...]string{
+var majors = [...]string{
 	"甲",
 	"乙",
 	"丙",
@@ -44,6 +41,13 @@ var Majors = [...]string{
 	"癸",
 }
 
+// Majors is Chinese name of 10 celestial stem
+//
+// 全部的天干名称
+func Majors() [10]string {
+	return majors
+}
+
 // Name returns the name of the celestial stem
 //
 // 返回天干名称(甲乙丙丁...)，无效天干返回空字符串
@@ -51,7 +55,7 @@ func (m Major) Name() string {
 	if !m.Valid() {
 		return ""
 	}
-	return Majors[(m-1)%MajorMod]
+	return majors[(m-1)%MajorCycle]
 }
 
 func (m Major) String() string {
@@ -71,4 +75,18 @@ func (m Major) Value() byte {
 // Valid returns whether the celestial stem is valid
 func (m Major) Valid() bool {
 	return Jia <= m && m <= Gui
+}
+
+func (m Major) YinYang() YinYang {
+	if !m.Valid() {
+		return YIN
+	}
+	return YinYang(m % 2)
+}
+
+func (m Major) Wuxing() Wuxing {
+	if !m.Valid() {
+		return InvalidWuxing
+	}
+	return Wuxing((m + 1) / 2)
 }

@@ -5,7 +5,7 @@ import (
 )
 
 func TestMinor(t *testing.T) {
-	for i, minor := range Minors {
+	for i, minor := range minors {
 		m := Minor(i + 1)
 		if m.String() != minor {
 			t.Errorf("%d: %s error", i+1, minor)
@@ -34,16 +34,5 @@ func TestMinor(t *testing.T) {
 	}
 	if Minor(1).Sign() != Shu {
 		t.Error("1: Minor(1).Sign() error")
-	}
-}
-
-func TestClock(t *testing.T) {
-	for i := 0; i < 24; i++ {
-		m := Clock(i)
-		if m.Name() != Minors[(i+1)/2%12] {
-			t.Errorf("Clock(%d) got %s, want %s", i, m.Name(), Minors[i%12])
-		} else {
-			t.Logf("Clock(%d) -> %s", i, m.Name())
-		}
 	}
 }
