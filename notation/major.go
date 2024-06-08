@@ -1,5 +1,7 @@
 package notation
 
+import "github.com/keepitlight/ChineseCalendarGo/util"
+
 // Major celestial stem, representing the primary symbols in the
 // traditional calendar/cultural symbol system, with the names of the 10 Heavenly Stems
 // expressed in pinyin
@@ -13,19 +15,30 @@ type Major byte
 type CelestialStem = Major
 
 const (
-	Jia  Major = 1 + iota // Jia 1st 甲
-	Yi                    // Yi 2nd 乙
-	Bing                  // Bing 3rd 丙
-	Ding                  // Ding 4th 丁
-	Wu                    // Wu 5th 戊（去声）
-	Ji                    // Ji 6th 己
-	Geng                  // Geng 7th 庚
-	Xin                   // Xin 8th 辛
-	Ren                   // Ren 9th 壬
-	Gui                   // Gui 10th 癸
+	Jia  Major = 1 + iota // Jia 1st, Chinese: 甲, Pinyin: jiǎ
+	Yi                    // Yi 2nd, Chinese: 乙, Pinyin: yǐ
+	Bing                  // Bing 3rd, Chinese: 丙, Pinyin: bǐng
+	Ding                  // Ding 4th, Chinese: 丁, Pinyin: dīng
+	Wu                    // Wu 5th, Chinese: 戊（去声）, Pinyin: wù
+	Ji                    // Ji 6th, Chinese: 己, Pinyin: jǐ
+	Geng                  // Geng 7th, Chinese: 庚, Pinyin: gēng
+	Xin                   // Xin 8th, Chinese: 辛, Pinyin: xīn
+	Ren                   // Ren 9th, Chinese: 壬, Pinyin: rén
+	Gui                   // Gui 10th, Chinese: 癸, Pinyin: guǐ
 
 	MajorInvalid Major = 0  // 无效值
 	MajorCycle         = 10 // 天干周期
+
+	甲 = Jia  // Jia 1st, Chinese: 甲, Pinyin: jiǎ
+	乙 = Yi   // Yi 2nd, Chinese: 乙, Pinyin: yǐ
+	丙 = Bing // Bing 3rd, Chinese: 丙, Pinyin: bǐng
+	丁 = Ding // Ding 4th, Chinese: 丁, Pinyin: dīng
+	戊 = Wu   // Wu 5th, Chinese: 戊（去声）, Pinyin: wù
+	己 = Ji   // Ji 6th, Chinese: 己, Pinyin: jǐ
+	庚 = Geng // Geng 7th, Chinese: 庚, Pinyin: gēng
+	辛 = Xin  // Xin 8th, Chinese: 辛, Pinyin: xīn
+	壬 = Ren  // Ren 9th, Chinese: 壬, Pinyin: rén
+	癸 = Gui  // Gui 10th, Chinese: 癸, Pinyin: guǐ
 )
 
 var majors = [...]string{
@@ -78,15 +91,43 @@ func (m Major) Valid() bool {
 }
 
 func (m Major) YinYang() YinYang {
-	if !m.Valid() {
-		return YIN
-	}
 	return YinYang(m % 2)
 }
 
 func (m Major) Wuxing() Wuxing {
-	if !m.Valid() {
-		return InvalidWuxing
-	}
 	return Wuxing((m + 1) / 2)
+}
+
+// MajorOf returns the major(celestial stem) of the given value v, notation.MajorInvalid if 0.
+//
+// 返回任意序数返回对应的天干，0 无效，返回 0
+func MajorOf(v int) Major {
+	return Major(util.Cycle(v, MajorCycle))
+}
+
+// Hour returns the major(celestial stem) of the given hour, day, notation.MajorInvalid if 0.
+//
+// 根据五鼠遁元计算日干某天某小时的天干，小时或日干无效时返回 notation.MajorInvalid
+func Hour(hour int, day Major) Major {
+	if !day.Valid() || hour < 0 || hour > 23 {
+		return MajorInvalid
+	}
+	// 甲己还加甲，乙庚丙作初
+	// 丙辛从戊起，丁壬庚子居
+	// 戊癸起壬子，周而复始求
+	switch day {
+	case 甲, 己:
+		day = 甲
+	case 乙, 庚:
+		day = 丙
+	case 丙, 辛:
+		day = 戊
+	case 丁, 壬:
+		day = 庚
+	case 戊, 癸:
+		day = 壬
+	default:
+		return MajorInvalid
+	}
+	return Major(util.Cycle(int(day)+hour, MajorCycle))
 }

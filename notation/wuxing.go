@@ -18,8 +18,14 @@ const (
 	Metal                   // Metal 金
 	Water                   // Water 水
 
-	InvalidWuxing = 0
+	WuxingInvalid = 0
 	WuxingCycle   = 5
+
+	木 = Wood
+	火 = Fire
+	土 = Earth
+	金 = Metal
+	水 = Water
 )
 
 func (w Wuxing) Valid() bool {

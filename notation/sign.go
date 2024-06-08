@@ -50,6 +50,19 @@ const (
 	Zhu  = Pig     // 猪，别名
 
 	SignCycle = 12
+
+	鼠 = Rat
+	牛 = Ox
+	虎 = Tiger
+	兔 = Rabbit
+	龙 = Dragon
+	蛇 = Snake
+	马 = Horse
+	羊 = Sheep
+	猴 = Monkey
+	鸡 = Rooster
+	狗 = Dog
+	猪 = Pig
 )
 
 // Signs is the names of Chinese zodiac.
@@ -72,18 +85,6 @@ var signs = [...]string{
 	"鸡",
 	"狗",
 	"猪",
-}
-
-// TryParse to parse the Chinese zodiac name to the corresponding sign, SignInvalid if failed
-//
-// 尝试解析生肖名为生肖，如果解析失败则返回 Invalid
-func TryParse(sign string) (Sign, bool) {
-	for i, s := range signs {
-		if s == sign {
-			return Sign(i + 1), true
-		}
-	}
-	return SignInvalid, false
 }
 
 // Name returns the name of Chinese zodiac.
@@ -122,11 +123,4 @@ func (s Sign) Value() byte {
 // 指示生肖是否有效
 func (s Sign) Valid() bool {
 	return Rat <= s && s <= Pig
-}
-
-// Valid returns whether the sign index is valid.
-//
-// 指示生肖索引值是否有效
-func Valid(sign int) bool {
-	return int(Rat) <= sign && sign <= int(Pig)
 }
