@@ -56,11 +56,15 @@ const (
 	HeavySnow       = MajorSnow          // 别名，大雪，英文名来自香港天文台
 )
 
-var ChineseNames = [...]string{
+var _ChineseNames = [...]string{
 	"小寒", "大寒", "立春", "雨水", "惊蛰", "春分",
 	"清明", "谷雨", "立夏", "小满", "芒种", "夏至",
 	"小暑", "大暑", "立秋", "处暑", "白露", "秋分",
 	"寒露", "霜降", "立冬", "小雪", "大雪", "冬至",
+}
+
+func ChineseNames() [24]string {
+	return _ChineseNames
 }
 
 // Name returns the Chinese name of the solar term.
@@ -70,7 +74,7 @@ func (st SolarTerm) Name() string {
 	if st <= Invalid || st > WinterSolstice {
 		return ""
 	}
-	return ChineseNames[(st-1)%24]
+	return _ChineseNames[(st-1)%24]
 }
 
 func (st SolarTerm) String() string {

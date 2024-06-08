@@ -131,6 +131,67 @@ const (
 	N58 = XinYou   // 辛酉 xīn yǒu
 	N59 = RenXu    // 壬戌 rén xū
 	N60 = GuiHai   // 癸亥 guǐ hài
+
+	甲子 = JiaZi
+	乙丑 = YiChou
+	丙寅 = BingYin
+	丁卯 = DingMao
+	戊辰 = WuChen
+	己巳 = JiSi
+	庚午 = GengWu
+	辛未 = XinWei
+	壬申 = RenShen
+	癸酉 = GuiYou
+	甲戌 = JiaXu
+	乙亥 = YiHai
+	丙子 = BingZi
+	丁丑 = DingChou
+	戊寅 = WuYin
+	己卯 = JiMao
+	庚辰 = GengChen
+	辛巳 = XinSi
+	壬午 = RenWu
+	癸未 = GuiWei
+	甲申 = JiaShen
+	乙酉 = YiYou
+	丙戌 = BingXu
+	丁亥 = DingHai
+	戊子 = WuZi
+	己丑 = JiChou
+	庚寅 = GengYin
+	辛卯 = XinMao
+	壬辰 = RenChen
+	癸巳 = GuiSi
+	甲午 = JiaWu
+	乙未 = YiWei
+	丙申 = BingShen
+	丁酉 = DingYou
+	戊戌 = WuXu
+	己亥 = JiHai
+	庚子 = GengZi
+	辛丑 = XinChou
+	壬寅 = RenYin
+	癸卯 = GuiMao
+	甲辰 = JiaChen
+	乙巳 = YiSi
+	丙午 = BingWu
+	丁未 = DingWei
+	戊申 = WuShen
+	己酉 = JiYou
+	庚戌 = GengXu
+	辛亥 = XinHai
+	壬子 = RenZi
+	癸丑 = GuiChou
+	甲寅 = JiaYin
+	乙卯 = YiMao
+	丙辰 = BingChen
+	丁巳 = DingSi
+	戊午 = WuWu
+	己未 = JiWei
+	庚申 = GengShen
+	辛酉 = XinYou
+	壬戌 = RenXu
+	癸亥 = GuiHai
 )
 
 // SexagesimalCycle is alias of Notation
@@ -178,6 +239,10 @@ func (n Notation) Index() int {
 // 验证天干和地支是否有效
 func (n Notation) Valid() bool {
 	return n > Invalid && n <= Cycle
+}
+
+func (n Notation) Pinyin() string {
+	return Pinyin(n)
 }
 
 func (n Notation) Equal(v Notation) bool {
@@ -341,32 +406,35 @@ func Names() [60]string {
 	return names
 }
 
-// Pinyin return the pinyin of sexagesimal cycle
+// Pinyin return the pinyin of the given notation(sexagesimal cycle) v
 //
-// 六十甲子的拼音
-func Pinyin() [60]string {
-	return pinyin
+// 返回指定干支的拼音
+func Pinyin(v Notation) string {
+	if !v.Valid() {
+		return ""
+	}
+	return pinyin[v-1]
 }
 
-// ParseByName parse notation by Chinese name, nil if invalid
+// TryParse to parse the notation(sexagesimal cycle) by Chinese name
 //
-// 根据中文名解析计时单位，无效值返回 nil
-func ParseByName(name string) Notation {
+// 根据中文名解析干支符号
+func TryParse(name string) (Notation, bool) {
 	for i := 0; i < len(names); i++ {
 		if names[i] == name {
-			return Notation(byte(i + 1))
+			return Notation(byte(i + 1)), true
 		}
 	}
-	return Invalid
+	return Invalid, false
 }
 
 const (
 	Cycle = 60 // 60 cycles
 )
 
-// Get returns notation by index(start from 1), Invalid if index is zero
+// Of returns the notation(sexagesimal cycle) by index, notation.Invalid if index is 0
 //
 // 根据序号返回干支（1 为甲子），注意，没有 0
-func Get(index int) Notation {
+func Of(index int) Notation {
 	return Notation(util.Cycle(index, Cycle))
 }

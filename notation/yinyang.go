@@ -10,6 +10,9 @@ const (
 	YIN  YinYang = 0 + iota // YIN is negative 阴
 	YANG                    // YANG is positive 阳
 
-	Negative = YIN
-	Positive = YANG
+	Negative = YIN  // Negative is negative 阴
+	Positive = YANG // Positive is positive 阳
+
+	阴 = YIN
+	阳 = YANG
 )
