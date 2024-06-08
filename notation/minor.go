@@ -132,3 +132,10 @@ func (m Minor) Wuxing() Wuxing {
 func MinorOf(v int) Minor {
 	return Minor(util.Cycle(v, MinorCycle))
 }
+
+// MinorOfHour returns the Minor of the given hour.
+//
+// 时钟的地支（每日时间的地支是固定对应的），两小时一地支，23 点至 0 点为子时，依次类推
+func MinorOfHour(hour int) Minor {
+	return Minor((hour%24+1)/2%MinorCycle + 1)
+}

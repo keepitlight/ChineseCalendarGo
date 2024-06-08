@@ -105,10 +105,10 @@ func MajorOf(v int) Major {
 	return Major(util.Cycle(v, MajorCycle))
 }
 
-// Hour returns the major(celestial stem) of the given hour, day, notation.MajorInvalid if 0.
+// MajorOfHour returns the major(celestial stem) of the given hour, day, notation.MajorInvalid if 0.
 //
 // 根据五鼠遁元计算日干某天某小时的天干，小时或日干无效时返回 notation.MajorInvalid
-func Hour(hour int, day Major) Major {
+func MajorOfHour(hour int, day Major) Major {
 	if !day.Valid() || hour < 0 || hour > 23 {
 		return MajorInvalid
 	}
