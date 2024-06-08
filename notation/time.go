@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Time is notation (sexagesimal cycle) time
+// Time is notation(sexagesimal cycle) time
 //
 // 干支计时
 type Time struct {
@@ -16,11 +16,10 @@ type Time struct {
 	clock Notation
 }
 
-// New creates a new notation time
+// New creates a new notation(sexagesimal cycle) time, t can be nil
 //
-// 创建干支时间
+// 创建干支时间，不需要精确时间时 t 可以为 nil
 func New(year, month, day, clock Notation, t *time.Time) *Time {
-	// 不需要与其它时间精确匹配时 t 可以为空
 	return &Time{
 		year:  year,
 		month: month,
