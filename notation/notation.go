@@ -2,9 +2,9 @@ package notation
 
 import "github.com/keepitlight/ChineseCalendarGo/util"
 
-// Notation Sexagesimal cycle
+// Notation represents a value of sexagesimal cycle.
 //
-// 干支，表示一个计元单位，由天干和地支构成，常用于表示年、月、日、时，也可用于其它计数用途
+// 干支（六十甲子），表示一个纪元单位，由天干和地支构成，常用于表示年、月、日、时，也可用于其它计数用途
 type Notation byte
 
 const (

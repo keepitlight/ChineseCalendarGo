@@ -104,30 +104,3 @@ func (m Major) Wuxing() Wuxing {
 func MajorOf(v int) Major {
 	return Major(util.Cycle(v, MajorCycle))
 }
-
-// Hour returns the major(celestial stem) of the given hour, day, notation.MajorInvalid if 0.
-//
-// 根据五鼠遁元计算日干某天某小时的天干，小时或日干无效时返回 notation.MajorInvalid
-func Hour(hour int, day Major) Major {
-	if !day.Valid() || hour < 0 || hour > 23 {
-		return MajorInvalid
-	}
-	// 甲己还加甲，乙庚丙作初
-	// 丙辛从戊起，丁壬庚子居
-	// 戊癸起壬子，周而复始求
-	switch day {
-	case 甲, 己:
-		day = 甲
-	case 乙, 庚:
-		day = 丙
-	case 丙, 辛:
-		day = 戊
-	case 丁, 壬:
-		day = 庚
-	case 戊, 癸:
-		day = 壬
-	default:
-		return MajorInvalid
-	}
-	return Major(util.Cycle(int(day)+hour, MajorCycle))
-}
