@@ -3,11 +3,11 @@ package notation
 import "testing"
 
 func TestWuxing(t *testing.T) {
-	if !Wood.IsInterPromoting(Fire) ||
-		!Fire.IsInterPromoting(Earth) ||
-		!Earth.IsInterPromoting(Metal) ||
-		!Metal.IsInterPromoting(Water) ||
-		!Water.IsInterPromoting(Wood) {
+	if !木.IsInterPromoting(火) ||
+		!火.IsInterPromoting(土) ||
+		!土.IsInterPromoting(金) ||
+		!金.IsInterPromoting(水) ||
+		!水.IsInterPromoting(木) {
 		t.Fatal("wuxing inter-promoting error")
 	}
 	if !Wood.IsInterRegulating(Earth) ||
