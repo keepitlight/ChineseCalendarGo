@@ -17,6 +17,9 @@ type ChineseZodiac = Sign
 // 别名，表示中国传统文化中的十二生肖
 type Symbol = Sign
 
+// Animal is an alias of Sign
+type Animal = Sign
+
 const (
 	Rat     Sign = 1 + iota // Rat 1st 鼠
 	Ox                      // Ox 2nd 牛

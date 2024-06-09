@@ -1,31 +1,27 @@
 package notation
 
-import (
-	"time"
-)
-
 // Time is notation(sexagesimal cycle) time
 //
 // 干支计时
 type Time struct {
-	t *time.Time
-
 	year  Notation
 	month Notation
 	day   Notation
 	clock Notation
 }
 
-// New creates a new notation(sexagesimal cycle) time, t can be nil
+// New creates a new notation(sexagesimal cycle) time, nil if any of them is invalid
 //
-// 创建干支时间，不需要精确时间时 t 可以为 nil
-func New(year, month, day, clock Notation, t *time.Time) *Time {
+// 创建干支时间，参数无效时返回 nil
+func New(year, month, day, clock Notation) *Time {
+	if !year.Valid() || !month.Valid() || !day.Valid() || !clock.Valid() {
+		return nil
+	}
 	return &Time{
 		year:  year,
 		month: month,
 		day:   day,
 		clock: clock,
-		t:     t,
 	}
 }
 
@@ -78,8 +74,4 @@ func (t *Time) Clock() Notation {
 
 func (t *Time) Date() (year, month, day Notation) {
 	return t.year, t.month, t.day
-}
-
-func (t *Time) Time() *time.Time {
-	return t.t
 }
