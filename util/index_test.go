@@ -81,12 +81,12 @@ func TestCycle(t *testing.T) {
 		{"13", args{13, 12}, 1},
 		{"14", args{14, 12}, 2},
 		{"24", args{24, 12}, 12},
-		{"100", args{96, 12}, 12},
-		{"100", args{97, 12}, 1},
-		{"100", args{98, 12}, 2},
-		{"100", args{99, 12}, 3},
+		{"96", args{96, 12}, 12},
+		{"97", args{97, 12}, 1},
+		{"98", args{98, 12}, 2},
+		{"99", args{99, 12}, 3},
 		{"100", args{100, 12}, 4},
-		{"100", args{101, 12}, 5},
+		{"101", args{101, 12}, 5},
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("Cycle(%s)", tt.name), func(t *testing.T) {
