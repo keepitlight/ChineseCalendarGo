@@ -1,11 +1,14 @@
 package notation
 
-import "github.com/keepitlight/ChineseCalendarGo/util"
+import (
+	"github.com/keepitlight/ChineseCalendarGo/util"
+	"strings"
+)
 
 // Notation represents a value of sexagesimal cycle.
 //
 // 干支（六十甲子），表示一个纪元单位，由天干和地支构成，常用于表示年、月、日、时，也可用于其它计数用途
-type Notation byte
+type Notation int
 
 const (
 	JiaZi    Notation = 1 + iota // 1, 甲子 jiǎ zǐ
@@ -199,9 +202,9 @@ const (
 // 别名，干支，表示一个计元单位，由天干和地支构成，常用于表示年、月、日、时，也可用于其它计数用途
 type SexagesimalCycle = Notation
 
-// Pair to pairs major and minor to create a notation, nil if major invalid, or minor invalid, or pair invalid.
+// Pair to pairs major and minor to create a notation, nil of major invalid, or minor invalid, or pair invalid.
 //
-// 天干地支配对组合成有效的干支值，参数无效或配对无效返回 nil
+// 天干地支配对组合成有效的干支值，参数无效或配对无效返回 false
 func Pair(major Major, minor Minor) (Notation, bool) {
 	if major.Valid() && minor.Valid() {
 		for r := 0; r <= 5; r++ {
@@ -218,27 +221,42 @@ func Pair(major Major, minor Minor) (Notation, bool) {
 //
 // 返回干支字符串，无效值返回空字符串
 func (n Notation) String() string {
-	if !n.Valid() {
+	i := n.Index()
+	if i < 0 {
 		return ""
 	}
-	return names[n-1]
+	return names[i]
 }
 
-// Index returns the index of notations
+// Index returns the index(0~59, value ranges is 1~60) of notations
 //
-// 返回计时单位的序号（即六十干支顺序值 0~59），无效的干支值返回 -1
+// 返回计时单位的序号（即六十干支的顺序 0~59，注意，值的范围为 1~60），无效的干支返回 -1
 func (n Notation) Index() int {
+	return n.Value() - 1
+}
+
+// Raw to return the raw value of the Notation
+//
+// 返回干支的原始值，也可以直接使用类型转换
+func (n Notation) Raw() int {
+	return int(n)
+}
+
+// Value to return the value of the Notation
+//
+// 返回干支的值 ，范围 1 ~ 60, 无效值返回 0
+func (n Notation) Value() int {
 	if !n.Valid() {
-		return -1
+		return 0
 	}
-	return int(n - 1)
+	return util.Cycle(int(n), Cycle)
 }
 
 // Valid detects whether the notation is valid
 //
 // 验证天干和地支是否有效
 func (n Notation) Valid() bool {
-	return n > Invalid && n <= Cycle
+	return n != 0
 }
 
 func (n Notation) Pinyin() string {
@@ -246,30 +264,17 @@ func (n Notation) Pinyin() string {
 }
 
 func (n Notation) Equal(v Notation) bool {
-	if !n.Valid() || !v.Valid() {
-		return false
-	}
-	return n == v
+	v1 := n.Value()
+	v2 := v.Value()
+	return v1 == v2
 }
 
 func (n Notation) Pair() (major Major, minor Minor) {
-	if !n.Valid() {
+	v := n.Value()
+	if v == 0 {
 		return MajorInvalid, MinorInvalid
 	}
-	return Major(util.Cycle(int(n), MajorCycle)), Minor(util.Cycle(int(n), MinorCycle))
-}
-
-func (n Notation) Prev() Notation {
-	if n == 1 {
-		return Notation(Cycle)
-	}
-	return n - 1
-}
-func (n Notation) Next() Notation {
-	if n == Cycle {
-		return 1
-	}
-	return n + 1
+	return Major(util.Cycle(v, MajorCycle)), Minor(util.Cycle(v, MinorCycle))
 }
 
 var (
@@ -397,6 +402,68 @@ var (
 		"rén xū",
 		"guǐ hài",
 	}
+	pinyin2 = [...]string{
+		"Jia Zi",
+		"Yi Chou",
+		"Bing Yin",
+		"Ding Mao",
+		"Wu Chen",
+		"Ji Si",
+		"Geng Wu",
+		"Xin Wei",
+		"Ren Shen",
+		"Gui You",
+		"Jia Xu",
+		"Yi Hai",
+		"Bing Zi",
+		"Ding Chou",
+		"Wu Yin",
+		"Ji Mao",
+		"Geng Chen",
+		"Xin Si",
+		"Ren Wu",
+		"Gui Wei",
+		"Jia Shen",
+		"Yi You",
+		"Bing Xu",
+		"Ding Hai",
+		"Wu Zi",
+		"Ji Chou",
+		"Geng Yin",
+		"Xin Mao",
+		"Ren Chen",
+		"Gui Si",
+		"Jia Wu",
+		"Yi Wei",
+		"Bing Shen",
+		"Ding You",
+		"Wu Xu",
+		"Ji Hai",
+		"Geng Zi",
+		"Xin Chou",
+		"Ren Yin",
+		"Gui Mao",
+		"Jia Chen",
+		"Yi Si",
+		"Bing Wu",
+		"Ding Wei",
+		"Wu Shen",
+		"Ji You",
+		"Geng Xu",
+		"Xin Hai",
+		"Ren Zi",
+		"Gui Chou",
+		"Jia Yin",
+		"Yi Mao",
+		"Bing Chen",
+		"Ding Si",
+		"Wu Wu",
+		"Ji Wei",
+		"Geng Shen",
+		"Xin You",
+		"Ren Xu",
+		"Gui Hai",
+	}
 )
 
 // Names return the Chinese names of sexagesimal cycle
@@ -406,23 +473,45 @@ func Names() [60]string {
 	return names
 }
 
-// Pinyin return the pinyin of the given notation(sexagesimal cycle) v
+// Pinyin return the pinyin of the given Notation
 //
 // 返回指定干支的拼音
 func Pinyin(v Notation) string {
-	if !v.Valid() {
-		return ""
+	if i := v.Value(); i != 0 {
+		return pinyin[v-1]
 	}
-	return pinyin[v-1]
+	return ""
 }
 
-// TryParse to parse the notation(sexagesimal cycle) by Chinese name
+// PinyinWithoutTone return the pinyin of the given Notation without tone.
 //
-// 根据中文名解析干支符号
+// 返回指定干支的不含音调的拼音（首字母大写）
+func PinyinWithoutTone(v Notation) string {
+	if i := v.Value(); i != 0 {
+		return pinyin[v-1]
+	}
+	return ""
+}
+
+// TryParse to parse the Notation by Chinese name or pinyin
+//
+// 根据中文名或拼音解析干支符号
 func TryParse(name string) (Notation, bool) {
 	for i := 0; i < len(names); i++ {
 		if names[i] == name {
-			return Notation(byte(i + 1)), true
+			return Notation(i + 1), true
+		}
+	}
+	for i := 0; i < len(pinyin); i++ {
+		py := strings.Replace(pinyin[i], " ", "", -1)
+		if strings.EqualFold(py, name) {
+			return Notation(i + 1), true
+		}
+	}
+	for i := 0; i < len(pinyin2); i++ {
+		py := strings.Replace(pinyin[i], " ", "", -1)
+		if strings.EqualFold(py, name) {
+			return Notation(i + 1), true
 		}
 	}
 	return Invalid, false
@@ -432,9 +521,21 @@ const (
 	Cycle = 60 // 60 cycles
 )
 
-// Of returns the notation(sexagesimal cycle) by index, notation.Invalid if index is 0
+// Of returns the Notation by value, notation.Invalid if value is 0. Directly define any value of the notation, use Notation(value).
 //
-// 根据序号返回干支（1 为甲子），注意，没有 0
-func Of(index int) Notation {
-	return Notation(util.Cycle(index, Cycle))
+// 根据任意值（0 无效）返回其标准干支值（甲子至癸亥），1 为甲子，注意，没有 0。
+// 要直接定义任何数值的干支，直接使用 Notation(value)。
+func Of(value int) Notation {
+	return Notation(util.Cycle(value, Cycle))
+}
+
+// Index returns the Notation by index, 0 is equal to JiaZi, return value range between JiaZi and GuiHai.
+//
+// 根据序号（任意值，0 为甲子）返回其标准干支值（甲子至癸亥）。负数表示反方向的序号号。
+// 要直接定义任何数值的干支，直接使用 Notation(value)。
+func Index(value int) Notation {
+	if value >= 0 {
+		value++
+	}
+	return Notation(util.Cycle(value, Cycle))
 }
