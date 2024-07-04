@@ -15,11 +15,11 @@ type Time struct {
 	day   Day   // 农历日
 }
 
-// Supported returns whether the year is supported of the Chinese calendar, which is from BC 1900 to 2100.
+// Supported returns whether the year is supported of the Chinese calendar, which is from 1900 to 2100 AD.
 //
 // 指定年份的农历数据是否被支持，仅支持 1900 至 2100 年的农历数据
 func (t *Time) Supported() bool {
-	return t.year.Supported()
+	return t.year >= YearStart && t.year <= YearEnd
 }
 
 // Year returns the current year of the Chinese calendar.
@@ -29,11 +29,11 @@ func (t *Time) Year() Year {
 	return t.year
 }
 
-// Month returns the current month of the Chinese calendar, nil if the month is invalid.
+// Month returns the current month of the Chinese calendar, nil if the month or year is invalid.
 //
 // 返回当前时间的农历月份
 func (t *Time) Month() *YearMonth {
-	if !t.year.Valid() || !t.year.Supported() || !t.month.Valid() {
+	if !t.year.Valid() || !t.Supported() || !t.month.Valid() {
 		return nil
 	}
 	m := t.month
@@ -94,4 +94,24 @@ func (t *Time) Equal(b *Time) bool {
 // 返回当前的公历时间。
 func (t *Time) Time() time.Time {
 	return t.t
+}
+
+// Days of year
+//
+// 表示该年农历的总天数
+func (t *Time) Days() int {
+	if !t.year.Valid() || !t.Supported() {
+		return 0
+	}
+	year := int(t.year)
+	var (
+		i, sum int
+	)
+	sum = 29 * 12
+	for i = 0x8000; i > 0x8; i >>= 1 {
+		if (calendars[year-YearStart] & i) != 0 {
+			sum++
+		}
+	}
+	return sum + DaysOfMonth
 }

@@ -1,7 +1,7 @@
 package time
 
 const (
-	Revision = "2024-05-28" // 数据最后修订日期，格式 time.DateOnly
+	Revision = "2024-05-28" // Last revision date, 数据最后修订日期，格式 time.DateOnly
 )
 
 var calendars = [...]int{
@@ -37,7 +37,9 @@ const (
 
 const EPOCH = -2206512000 // time.Time(1900, 1, 30, 0, 0, 0, 0, time.Local).Unix()
 
-// DaysOfYear 返回指定农历年份的总天数
+// DaysOfYear returns the total days of the given year in the Chinese calendar.
+//
+// 返回指定农历年份的总天数
 func DaysOfYear(year int) int {
 	if year < YearStart || year > YearEnd {
 		return 0
@@ -69,6 +71,7 @@ const (
 	DaysOfLittleMonth = 29  // 小月的天数
 	DaysOfLeapYear    = 384 // 闰年的总天数
 	DaysOfNonLeapYear = 354 // 平年的总天数
+	DAY               = "日"
 )
 
 // Days return days of the given year and month in the Chinese calendar.

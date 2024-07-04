@@ -1,5 +1,7 @@
 package time
 
+import "github.com/keepitlight/ChineseCalendarGo/util"
+
 // Year represents the year of the traditional Chinese calendar, Zero is invalid,
 // negative of year means BC
 //
@@ -10,26 +12,6 @@ const (
 	YearInvalid = 0 // Invalid year, no zero 无效的年份，没有 0 年
 )
 
-// Days of year
-//
-// 表示该年农历的总天数
-func (y Year) Days() int {
-	if !y.Valid() || !y.Supported() {
-		return 0
-	}
-	year := int(y)
-	var (
-		i, sum int
-	)
-	sum = 29 * 12
-	for i = 0x8000; i > 0x8; i >>= 1 {
-		if (calendars[year-YearStart] & i) != 0 {
-			sum++
-		}
-	}
-	return sum + DaysOfMonth
-}
-
 // Valid returns whether the year is valid.
 //
 // 年份是否有效
@@ -37,47 +19,36 @@ func (y Year) Valid() bool {
 	return y != YearInvalid
 }
 
-// Supported returns whether the year is supported of the Chinese calendar, which is from BC 1900 to 2100.
+const (
+	NAME = "农历"
+	AD   = "公元"
+	BC   = "前"
+	YEAR = "年"
+)
+
+// String returns the string representation of the year.
 //
-// 指定年份的农历数据是否被支持，仅支持 1900 至 2100 年的农历数据
-func (y Year) Supported() bool {
-	return y >= YearStart && y <= YearEnd
+// 返回年份的字符串表示，如 "二〇二四年"，"公元前二二〇年"
+func (y Year) String() string {
+	if y == YearInvalid {
+		return ""
+	}
+	p := AD
+	return p + y.Name() + YEAR
 }
 
-// Month returns the month of the year.
+// Name returns the name of the year.
 //
-// 返回该年的农历月份（1,2,3...12），例如 2018 年 1 月返回 “正月”，无效的月份返回 nil
-func (y Year) Month(month Month) *YearMonth {
-	if !y.Valid() || !y.Supported() {
-		return nil
+// 返回年份的名称，如 "二〇二四"，"前二二〇"
+func (y Year) Name() string {
+	if y == YearInvalid {
+		return ""
 	}
-	var m, d int
-	if month == LeapMonth {
-		// 闰月
-		if m = calendars[y-YearStart] & yearMask; m == 0 {
-			// 无闰月
-			return nil
-		} else {
-			month = Month(m)
-		}
-		d = DaysOfMonth // 闰月固定 30 天
-	} else if !month.Valid() {
-		return nil
-	} else if month.IsLeapMonth() {
-		// 闰月
-		if m = calendars[y-YearStart] & yearMask; m == 0 || m != month.Value() {
-			// 无闰月
-			return nil
-		}
-		d = DaysOfMonth // 闰月固定 30 天
-	} else {
-		d = Days(int(y), int(month))
-		if d == 0 {
-			return nil
-		}
+	var p string
+	v := y
+	if v < 0 {
+		p = BC
+		v = 0 - v
 	}
-	return &YearMonth{
-		month: month,
-		days:  d,
-	}
+	return p + util.Digits(uint64(v))
 }

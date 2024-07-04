@@ -19,7 +19,20 @@ var dayPrefixes = [...]string{
 	"初", "十", "廿", "卅",
 }
 
+// String converts the day to a string of the Chinese calendar.
+//
+// 将日转换为农历日期字符串，初九日
 func (d Day) String() string {
+	if d == 0 || d > 30 {
+		return ""
+	}
+	return d.Name() + DAY
+}
+
+// Name converts the day to a string of the Chinese calendar.
+//
+// 将日转换为农历日期字符串，初九，……
+func (d Day) Name() string {
 	if d == 0 || d > 30 {
 		return ""
 	}
@@ -36,6 +49,7 @@ func (d Day) String() string {
 	}
 	return name
 }
+
 func (d Day) Valid() bool {
 	return d > 0 && d <= 30
 }
