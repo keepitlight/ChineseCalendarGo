@@ -1,6 +1,6 @@
 package notation
 
-// Time is notation(sexagesimal cycle) time
+// Time is notation time, which is a sexagesimal cycle.
 //
 // 干支计时
 type Time struct {
@@ -10,13 +10,10 @@ type Time struct {
 	clock Notation
 }
 
-// New creates a new notation(sexagesimal cycle) time, nil if any of them is invalid
+// New creates a new sexagesimal cycle time
 //
-// 创建干支时间，参数无效时返回 nil
+// 创建干支时间
 func New(year, month, day, clock Notation) *Time {
-	if !year.Valid() || !month.Valid() || !day.Valid() || !clock.Valid() {
-		return nil
-	}
 	return &Time{
 		year:  year,
 		month: month,
@@ -25,11 +22,11 @@ func New(year, month, day, clock Notation) *Time {
 	}
 }
 
-// Sign returns year's sign (symbol/animal)
+// Sign returns year's sign, which is a Chinese symbol/animal of the year
 //
 // 返回年份生肖
 func (t *Time) Sign() Sign {
-	if !t.year.Valid() {
+	if !t.Valid() {
 		return SignInvalid
 	}
 	_, i := t.year.Pair()
@@ -51,12 +48,15 @@ func (t *Time) Valid() bool {
 
 func (t *Time) Equal(b *Time) bool {
 	if b == nil {
-		return t == b
+		return t == nil
 	}
-	return t.year == b.year &&
-		t.month == b.month &&
-		t.day == b.day &&
-		t.clock == b.clock
+	if !t.Valid() {
+		return !b.Valid()
+	}
+	return t.year.Equal(b.year) &&
+		t.month.Equal(b.month) &&
+		t.day.Equal(b.day) &&
+		t.clock.Equal(b.clock)
 }
 
 func (t *Time) Year() Notation {
