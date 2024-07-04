@@ -14,7 +14,7 @@ const (
 //
 // 表示该年农历的总天数
 func (y Year) Days() int {
-	if !y.Valid() {
+	if !y.Valid() || !y.Supported() {
 		return 0
 	}
 	year := int(y)
@@ -30,15 +30,25 @@ func (y Year) Days() int {
 	return sum + DaysOfMonth
 }
 
+// Valid returns whether the year is valid.
+//
+// 年份是否有效
 func (y Year) Valid() bool {
-	return y != YearInvalid && y >= YearStart && y <= YearEnd
+	return y != YearInvalid
+}
+
+// Supported returns whether the year is supported of the Chinese calendar, which is from BC 1900 to 2100.
+//
+// 指定年份的农历数据是否被支持，仅支持 1900 至 2100 年的农历数据
+func (y Year) Supported() bool {
+	return y >= YearStart && y <= YearEnd
 }
 
 // Month returns the month of the year.
 //
 // 返回该年的农历月份（1,2,3...12），例如 2018 年 1 月返回 “正月”，无效的月份返回 nil
 func (y Year) Month(month Month) *YearMonth {
-	if !y.Valid() {
+	if !y.Valid() || !y.Supported() {
 		return nil
 	}
 	var m, d int
