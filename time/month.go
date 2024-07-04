@@ -169,29 +169,6 @@ const (
 //
 // 表示农历某年的月份，不单独使用。
 type YearMonth struct {
-	month Month // 月份
-	days  int   // 天数
-}
-
-// Days 返回指定月份的天数，如非特定的/具体的月份，则返回 0
-func (m *YearMonth) Days() int {
-	return m.days
-}
-
-// String returns the Chinese representation of the month.
-//
-// 返回月份的中文表示法，例如 “闰二月”
-func (m *YearMonth) String() string {
-	return m.month.String()
-}
-
-// IsLeapMonth returns true if the month is a leap month.
-//
-// 返回指定月份是否为闰月
-func (m *YearMonth) IsLeapMonth() bool {
-	return m.month.IsLeapMonth()
-}
-
-func (m *YearMonth) Month() Month {
-	return m.month
+	Month Month // Month 月份
+	Days  int   // Days of month 天数
 }
