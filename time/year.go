@@ -44,7 +44,6 @@ func (y Year) Month(month Month) *YearMonth {
 	var m, d int
 	if month == LeapMonth {
 		// 闰月
-
 		if m = calendars[y-YearStart] & yearMask; m == 0 {
 			// 无闰月
 			return nil
@@ -68,7 +67,6 @@ func (y Year) Month(month Month) *YearMonth {
 		}
 	}
 	return &YearMonth{
-		year:  y,
 		month: month,
 		days:  d,
 	}
