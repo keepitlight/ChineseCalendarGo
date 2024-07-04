@@ -2,7 +2,7 @@ package notation
 
 import "github.com/keepitlight/ChineseCalendarGo/util"
 
-// Wuxing (Chinese: 五行; pinyin: wǔxíng),usually translated as Five Phases or Five Agents,
+// Wuxing Chinese: 五行; pinyin: wǔxíng, usually translated as Five Phases or Five Agents,
 // is a fivefold conceptual scheme used in many traditional Chinese fields of study to explain
 // a wide array of phenomena, including cosmic cycles, the interactions between internal organs,
 // the succession of political regimes, and the properties of herbal medicines.
