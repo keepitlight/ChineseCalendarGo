@@ -35,6 +35,31 @@ const (
 )
 
 const (
+	小寒 = MinorCold
+	大寒 = MajorCold
+	立春 = BeginningOfSpring
+	雨水 = RainWater
+	惊蛰 = AwakeningOfInsects
+	春分 = SpringEquinox
+	清明 = PureBrightness
+	谷雨 = GrainRain
+	立夏 = BeginningOfSummer
+	小满 = GrainBuds
+	芒种 = GrainInEar
+	夏至 = SummerSolstice
+	小暑 = MinorHeat
+	大暑 = MajorHeat
+	立秋 = BeginningOfAutumn
+	处暑 = EndOfHeat
+	白露 = WhiteDew
+	秋分 = AutumnEquinox
+	寒露 = ColdDew
+	霜降 = FrostsDescent
+	立冬 = BeginningOfWinter
+	小雪 = MinorSnow
+	大雪 = MajorSnow
+	冬至 = WinterSolstice
+
 	ModerateCold    = MinorCold          // 别名，小寒，英文名来自香港天文台
 	SevereCold      = MajorCold          // 别名，大寒，英文名来自香港天文台
 	SpringCommences = BeginningOfSpring  // 别名，立春，英文名来自香港天文台

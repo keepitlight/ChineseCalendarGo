@@ -79,17 +79,27 @@ var _ChineseMonths = [...]string{
 
 // String returns the string representation of Chinese name.
 //
-// 月份的中文名
+// 月份的字符串，正月，二月，三月，四月，五月，六月，七月，八月，九月，十月，冬月，腊月
 func (m Month) String() string {
+	if !m.Valid() {
+		return ""
+	}
+	return m.Name() + MONTH
+}
+
+// Name returns the string representation of Chinese name.
+//
+// 月份的中文名，正，二，三，四，五，六，七，八，九，十，冬，腊
+func (m Month) Name() string {
 	v := m.Value()
 	if v == 0 {
 		return ""
 	}
 	var l string
 	if m < MonthInvalid {
-		l = _ChineseLeap
+		l = LEAP
 	}
-	return l + _ChineseMonths[v] + _ChineseMonth
+	return l + _ChineseMonths[v]
 }
 
 func (m Month) IsLeapMonth() bool {
@@ -160,8 +170,8 @@ const (
 )
 
 const (
-	_ChineseLeap  = "闰"
-	_ChineseMonth = "月"
+	LEAP  = "闰"
+	MONTH = "月"
 )
 
 // YearMonth represents a specific month within a given year according to the traditional Chinese
@@ -169,29 +179,6 @@ const (
 //
 // 表示农历某年的月份，不单独使用。
 type YearMonth struct {
-	month Month // 月份
-	days  int   // 天数
-}
-
-// Days 返回指定月份的天数，如非特定的/具体的月份，则返回 0
-func (m *YearMonth) Days() int {
-	return m.days
-}
-
-// String returns the Chinese representation of the month.
-//
-// 返回月份的中文表示法，例如 “闰二月”
-func (m *YearMonth) String() string {
-	return m.month.String()
-}
-
-// IsLeapMonth returns true if the month is a leap month.
-//
-// 返回指定月份是否为闰月
-func (m *YearMonth) IsLeapMonth() bool {
-	return m.month.IsLeapMonth()
-}
-
-func (m *YearMonth) Month() Month {
-	return m.month
+	Month Month // Month 月份
+	Days  int   // Days of month 天数
 }

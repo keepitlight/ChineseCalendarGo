@@ -52,7 +52,7 @@ func (i Index) IsToday() bool {
 	return i.In(time.Now())
 }
 
-// In detects whether the specified time is the current solar term.
+// In detecting whether the specified time is the current solar term.
 //
 // 测试指定时间是否为当前的节气
 func (i Index) In(t time.Time) bool {
@@ -77,7 +77,7 @@ func (i Index) Is(st SolarTerm) bool {
 	return i.SolarTerm() == st
 }
 
-// Supported reports whether the current index is a valid solar term index, which is between BC 1904 and 3000.
+// Supported reports whether the current index is a valid solar term index, which is between 1904 and 3000 AD.
 //
 // 测试是否为有效的节气索引
 func (i Index) Supported() bool {
