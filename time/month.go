@@ -62,6 +62,21 @@ func (m Month) Value() int {
 	return util.Cycle(int(m), MonthCycle)
 }
 
+var _ChineseMonths = [...]string{
+	"正",
+	"二",
+	"三",
+	"四",
+	"五",
+	"六",
+	"七",
+	"八",
+	"九",
+	"十", // 传统上为寒月，但已不常用
+	"冬", // 寒冬腊月
+	"腊",
+}
+
 // String returns the string representation of Chinese name.
 //
 // 月份的中文名

@@ -77,10 +77,10 @@ func (i Index) Is(st SolarTerm) bool {
 	return i.SolarTerm() == st
 }
 
-// Valid reports whether the current index is a valid solar term index.
+// Supported reports whether the current index is a valid solar term index, which is between BC 1904 and 3000.
 //
 // 测试是否为有效的节气索引
-func (i Index) Valid() bool {
+func (i Index) Supported() bool {
 	return isSupported(int(i))
 }
 
