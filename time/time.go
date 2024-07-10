@@ -141,3 +141,19 @@ func (t *Time) String() string {
 	//vs = append(vs, c.String())
 	return strings.Join(vs, "")
 }
+
+func (t *Time) Before(c *Time) bool {
+	if c == nil {
+		return false
+	}
+	return t.t.Before(c.t)
+}
+func (t *Time) After(c *Time) bool {
+	if c == nil {
+		return true
+	}
+	return t.t.After(c.t)
+}
+func (t *Time) Compare(c *Time) int {
+	return t.t.Compare(c.t)
+}
