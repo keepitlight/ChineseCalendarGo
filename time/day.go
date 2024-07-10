@@ -31,7 +31,7 @@ func (d Day) String() string {
 
 // Name converts the day to a string of the Chinese calendar.
 //
-// 将日转换为农历日期字符串，初九，……
+// 将日转换为农历日期字符串，如初一，初九，初十，二十，廿一，廿九 ……
 func (d Day) Name() string {
 	if d == 0 || d > 30 {
 		return ""
