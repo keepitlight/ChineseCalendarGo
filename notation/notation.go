@@ -242,7 +242,7 @@ func (n Notation) Raw() int {
 	return int(n)
 }
 
-// Value to return the value of the Notation
+// Value to return the value of the Notation, range 1 ~ 60, invalid value returns 0
 //
 // 返回干支的值 ，范围 1 ~ 60, 无效值返回 0
 func (n Notation) Value() int {

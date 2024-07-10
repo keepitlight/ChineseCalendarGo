@@ -1,6 +1,7 @@
 package time
 
 import (
+	"strings"
 	"time"
 )
 
@@ -72,6 +73,14 @@ func (t *Time) Date() (year Year, month Month, day Day) {
 	return t.year, t.month, t.day
 }
 
+// Clock returns the current clock information.
+//
+// 返回当前的时钟信息
+func (t *Time) Clock() *Clock {
+	h, m, s := t.t.Clock()
+	return ClockOf(h, m, s, t.t.Nanosecond())
+}
+
 // Equal reports whether t and b represent the same time in the Chinese calendar
 // without minute and second.
 //
@@ -114,4 +123,21 @@ func (t *Time) Days() int {
 		}
 	}
 	return sum + DaysOfMonth
+}
+
+func (t *Time) String() string {
+	var vs []string
+	if t.year.Valid() && t.Supported() {
+		vs = append(vs, t.year.String())
+	}
+	if t.month.Valid() {
+		vs = append(vs, t.month.String())
+	}
+	if t.day.Valid() {
+		vs = append(vs, t.day.String())
+	}
+	// 不使用时钟
+	//c := t.Clock()
+	//vs = append(vs, c.String())
+	return strings.Join(vs, "")
 }
