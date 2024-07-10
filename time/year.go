@@ -28,7 +28,7 @@ const (
 
 // String returns the string representation of the year.
 //
-// 返回年份的字符串表示，如 "二〇二四年"，"公元前二二〇年"
+// 返回年份的字符串表示，如 "公元二〇二四年"，"公元前二二〇年"
 func (y Year) String() string {
 	if y == YearInvalid {
 		return ""
@@ -51,4 +51,8 @@ func (y Year) Name() string {
 		v = 0 - v
 	}
 	return p + util.Digits(uint64(v))
+}
+
+func (y Year) BC() bool {
+	return y < 0
 }

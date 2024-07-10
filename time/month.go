@@ -79,12 +79,17 @@ var _ChineseMonths = [...]string{
 
 // String returns the string representation of Chinese name.
 //
-// 月份的字符串，正月，二月，三月，四月，五月，六月，七月，八月，九月，十月，冬月，腊月
+// 月份的中文字符串：正月，二月，三月，四月，五月，六月，七月，八月，九月，十月，冬月，腊月，
+// 如果是闰月，前置“闰”字：闰正月，闰二月，闰三月，闰四月，闰五月，闰六月，闰七月，闰八月，闰九月，闰十月，闰冬月，闰腊月
 func (m Month) String() string {
 	if !m.Valid() {
 		return ""
 	}
-	return m.Name() + MONTH
+	var l string
+	if m < MonthInvalid {
+		l = LEAP
+	}
+	return l + m.Name() + MONTH
 }
 
 // Name returns the string representation of Chinese name.
@@ -95,11 +100,7 @@ func (m Month) Name() string {
 	if v == 0 {
 		return ""
 	}
-	var l string
-	if m < MonthInvalid {
-		l = LEAP
-	}
-	return l + _ChineseMonths[v]
+	return _ChineseMonths[v]
 }
 
 func (m Month) IsLeapMonth() bool {
